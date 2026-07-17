@@ -39,7 +39,6 @@
     font-size:15px;
 }
 
-/* Input Fields */
 .input-group input{
     width:100%;
     padding:14px 18px;
@@ -51,13 +50,12 @@
     background:#f8f9fa;
 }
 
-/* Placeholder */
+
 .input-group input::placeholder{
     color:#9ca3af;
     font-style:italic;
 }
 
-/* Focus */
 .input-group input:focus{
     border-color:#2563eb;
     background:#fff;
@@ -80,7 +78,7 @@
     transform:translateY(-2px);
     background:linear-gradient(135deg,#b9f332,#2a5298);
 }
-/* Forgot Password */
+
 
 .forgot-password{
     text-align:right;
@@ -100,7 +98,7 @@
     text-decoration:underline;
 }
 
-/* Register Link */
+
 
 .register-link{
     text-align:center;

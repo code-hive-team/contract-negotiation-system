@@ -1,4 +1,3 @@
-/* Reset */
 *{
     margin:0;
     padding:0;
@@ -11,7 +10,7 @@ html,body{
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Background */
+
 .register-container{
     width:100%;
     min-height:100vh;
@@ -22,7 +21,7 @@ html,body{
     padding:30px;
 }
 
-/* Card */
+
 .register-card{
     width:450px;
     background:#fff;
@@ -32,7 +31,7 @@ html,body{
     animation:fadeIn .6s ease;
 }
 
-/* Heading */
+
 .register-card h1{
     text-align:center;
     color:#1E3C72;
@@ -41,7 +40,7 @@ html,body{
     font-weight:bold;
 }
 
-/* Input Group */
+
 .input-group{
     margin-bottom:18px;
 }
@@ -54,7 +53,7 @@ html,body{
     font-size:15px;
 }
 
-/* Input Fields */
+
 .input-group input{
     width:100%;
     padding:14px 18px;
@@ -66,20 +65,19 @@ html,body{
     background:#f8f9fa;
 }
 
-/* Placeholder */
+
 .input-group input::placeholder{
     color:#9ca3af;
     font-style:italic;
 }
 
-/* Focus */
+
 .input-group input:focus{
     border-color:#2563eb;
     background:#fff;
     box-shadow:0 0 10px rgba(37,99,235,.25);
 }
 
-/* Register Button */
 .register-btn{
     width:100%;
     padding:15px;
@@ -98,7 +96,6 @@ html,body{
     background:linear-gradient(135deg,#b9f332,#2a5298);
 }
 
-/* Divider */
 .divider{
     display:flex;
     align-items:center;
@@ -119,7 +116,6 @@ html,body{
     font-size:14px;
 }
 
-/* Social Buttons */
 .google-btn,
 .facebook-btn{
     width:100%;
@@ -153,7 +149,7 @@ html,body{
     background:linear-gradient(135deg,#b9f332,#2a5298);
 }
 
-/* Login Link */
+
 .login-link{
     text-align:center;
     margin-top:20px;
@@ -170,7 +166,7 @@ html,body{
     text-decoration:underline;
 }
 
-/* Animation */
+
 @keyframes fadeIn{
     from{
         opacity:0;
@@ -182,7 +178,7 @@ html,body{
     }
 }
 
-/* Responsive */
+
 @media(max-width:500px){
 
     .register-card{
