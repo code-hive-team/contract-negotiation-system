@@ -9,18 +9,21 @@ pipeline {
             }
         }
 
-       stage('Install Dependencies') {
-    steps {
-        dir('GenAI_Part') {
-            sh 'python3 -m pip install -r requirements.txt'
+        stage('Install Dependencies') {
+            steps {
+                dir('GenAI_Part') {
+                    sh 'python3 -m pip install --user -r requirements.txt'
+                }
+            }
         }
-    }
-}
 
         stage('Run Tests') {
             steps {
                 dir('GenAI_Part') {
-                    sh 'pytest || true'
+                    sh '''
+                    python3 -m pip install --user pytest
+                    ~/.local/bin/pytest || true
+                    '''
                 }
             }
         }
@@ -28,8 +31,18 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 dir('GenAI_Part') {
-                    withSonarQubeEnv('sonarqube') {
-                        sh 'sonar-scanner'
+                    script {
+                        def scannerHome = tool 'sonarqube'
+
+                        withSonarQubeEnv('sonarqube') {
+                            sh """
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=genai-project \
+                                -Dsonar.projectName=genai-project \
+                                -Dsonar.sources=. \
+                                -Dsonar.python.version=3.9
+                            """
+                        }
                     }
                 }
             }
@@ -49,9 +62,10 @@ pipeline {
             emailext(
                 subject: "${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
-Job : ${env.JOB_NAME}
-Branch : ${env.BRANCH_NAME}
-Status : ${currentBuild.currentResult}
+Job Name : ${env.JOB_NAME}
+Branch   : ${env.BRANCH_NAME}
+Build No : ${env.BUILD_NUMBER}
+Status   : ${currentBuild.currentResult}
 
 Build URL:
 ${env.BUILD_URL}
