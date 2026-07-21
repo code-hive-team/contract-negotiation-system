@@ -11,20 +11,26 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'python3 -m pip install -r requirements.txt'
+                dir('GenAI_Part') {
+                    sh 'python3 -m pip install -r requirements.txt'
+                }
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest || true'
+                dir('GenAI_Part') {
+                    sh 'pytest || true'
+                }
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh 'sonar-scanner'
+                dir('GenAI_Part') {
+                    withSonarQubeEnv('sonarqube') {
+                        sh 'sonar-scanner'
+                    }
                 }
             }
         }
