@@ -116,6 +116,8 @@ async def negotiate_contracts(
                 "negotiation_status": negotiation_status
             }
         }
+    except HTTPException as he:
+        raise he
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
