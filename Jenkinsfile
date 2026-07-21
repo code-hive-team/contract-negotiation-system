@@ -12,7 +12,10 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('GenAI_Part') {
-                    sh 'python3 -m pip install --user -r requirements.txt'
+                    sh '''
+                        python3 -m pip install --user -r requirements.txt
+                        python3 -m pip install --user pytest
+                    '''
                 }
             }
         }
@@ -20,10 +23,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 dir('GenAI_Part') {
-                    sh '''
-                    python3 -m pip install --user pytest
-                    ~/.local/bin/pytest || true
-                    '''
+                    sh '~/.local/bin/pytest || true'
                 }
             }
         }
@@ -62,10 +62,9 @@ pipeline {
             emailext(
                 subject: "${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
-Job Name : ${env.JOB_NAME}
-Branch   : ${env.BRANCH_NAME}
-Build No : ${env.BUILD_NUMBER}
-Status   : ${currentBuild.currentResult}
+Job : ${env.JOB_NAME}
+Branch : ${env.BRANCH_NAME}
+Status : ${currentBuild.currentResult}
 
 Build URL:
 ${env.BUILD_URL}
