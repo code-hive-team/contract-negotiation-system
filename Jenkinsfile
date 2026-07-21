@@ -9,13 +9,13 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                dir('GenAI_Part') {
-                    sh 'python3 -m pip install -r requirements.txt'
-                }
-            }
+       stage('Install Dependencies') {
+    steps {
+        dir('GenAI_Part') {
+            sh 'python3 -m pip install -r requirements.txt'
         }
+    }
+}
 
         stage('Run Tests') {
             steps {
