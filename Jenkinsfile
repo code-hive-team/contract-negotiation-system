@@ -14,7 +14,7 @@ pipeline {
                 dir('GenAI_Part') {
                     sh '''
                         python3 -m pip install --user -r requirements.txt
-                        python3 -m pip install --user pytest
+                        python3 -m pip install --user -r requirements-dev.txt
                     '''
                 }
             }
@@ -23,7 +23,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 dir('GenAI_Part') {
-                    sh '~/.local/bin/pytest || true'
+                    sh 'python3 -m pytest --cov=. --cov-report=xml || true'
                 }
             }
         }
