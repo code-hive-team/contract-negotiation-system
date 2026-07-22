@@ -35,7 +35,7 @@ def test_negotiate_contracts_success():
     with patch("app.extract_text") as mock_extract, \
          patch("app.classify_contract") as mock_classify, \
          patch("app.negotiation_workflow.invoke") as mock_workflow_invoke, \
-         patch("os.path.samefile", return_value=False):
+         patch("filecmp.cmp", return_value=False):
         
         # Setup mock behavior
         mock_extract.side_effect = [
@@ -82,8 +82,8 @@ def test_negotiate_contracts_identical_files():
     file1 = ("issuer.pdf", io.BytesIO(b"same content"), "application/pdf")
     file2 = ("acquirer.pdf", io.BytesIO(b"same content"), "application/pdf")
     
-    # We force os.path.samefile to return True to simulate identical files check
-    with patch("os.path.samefile", return_value=True):
+    # We force filecmp.cmp to return True to simulate identical files check
+    with patch("filecmp.cmp", return_value=True):
         response = client.post(
             "/api/negotiate",
             files={"issuer_file": file1, "acquirer_file": file2}
@@ -96,7 +96,7 @@ def test_negotiate_contracts_swapped_issuer():
     file2 = ("acquirer.pdf", io.BytesIO(b"dummy"), "application/pdf")
     
     with patch("app.extract_text") as mock_extract, \
-         patch("os.path.samefile", return_value=False):
+         patch("filecmp.cmp", return_value=False):
         
         mock_extract.side_effect = [
             "This contract contains Acquirer Company Contract keyword",
@@ -115,7 +115,7 @@ def test_negotiate_contracts_swapped_acquirer():
     file2 = ("acquirer.pdf", io.BytesIO(b"dummy"), "application/pdf")
     
     with patch("app.extract_text") as mock_extract, \
-         patch("os.path.samefile", return_value=False):
+         patch("filecmp.cmp", return_value=False):
         
         mock_extract.side_effect = [
             "Valid issuer text",
@@ -134,7 +134,7 @@ def test_negotiate_contracts_empty_issuer():
     file2 = ("acquirer.pdf", io.BytesIO(b"dummy"), "application/pdf")
     
     with patch("app.extract_text") as mock_extract, \
-         patch("os.path.samefile", return_value=False):
+         patch("filecmp.cmp", return_value=False):
         
         mock_extract.side_effect = [
             "",
@@ -153,7 +153,7 @@ def test_negotiate_contracts_empty_acquirer():
     file2 = ("acquirer.pdf", io.BytesIO(b"dummy"), "application/pdf")
     
     with patch("app.extract_text") as mock_extract, \
-         patch("os.path.samefile", return_value=False):
+         patch("filecmp.cmp", return_value=False):
         
         mock_extract.side_effect = [
             "Valid issuer text",
@@ -174,7 +174,7 @@ def test_negotiate_contracts_workflow_exception():
     with patch("app.extract_text") as mock_extract, \
          patch("app.classify_contract") as mock_classify, \
          patch("app.negotiation_workflow.invoke", side_effect=Exception("Workflow execution failed")), \
-         patch("os.path.samefile", return_value=False):
+         patch("filecmp.cmp", return_value=False):
         
         mock_extract.side_effect = [
             "Valid issuer text",

@@ -1,6 +1,7 @@
 import os
 import shutil
 import tempfile
+import filecmp
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pypdf import PdfReader
@@ -54,7 +55,7 @@ async def negotiate_contracts(
 
     try:
         # Check if identical files
-        if os.path.samefile(issuer_tmp_path, acquirer_tmp_path):
+        if filecmp.cmp(issuer_tmp_path, acquirer_tmp_path, shallow=False):
             raise HTTPException(status_code=400, detail="Issuer and Acquirer contracts cannot be the same file.")
 
         issuer_text = extract_text(issuer_tmp_path)
