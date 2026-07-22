@@ -5,7 +5,11 @@ import argparse
 from dotenv import load_dotenv
 
 sys.stdout.reconfigure(encoding='utf-8')
+import logging
 from pypdf import PdfReader
+
+# Suppress harmless pypdf warnings
+logging.getLogger("pypdf").setLevel(logging.ERROR)
 
 from classifier import classify_contract
 from negotiation_graph import negotiation_workflow

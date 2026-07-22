@@ -4,7 +4,11 @@ import tempfile
 import filecmp
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import logging
 from pypdf import PdfReader
+
+# Suppress harmless pypdf warnings
+logging.getLogger("pypdf").setLevel(logging.ERROR)
 from classifier import classify_contract
 from negotiation_graph import negotiation_workflow
 
