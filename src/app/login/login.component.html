@@ -1,36 +1,49 @@
 <div class="login-container">
-    <div class="login-card">
+  <div class="login-card">
 
-        <h1>Login</h1>
+    <h1>Login</h1>
 
-        <form>
+    <form>
 
-            <div class="input-group">
-                <label>Username / Email</label>
-                <input type="text" placeholder="Enter Username/Email">
-            </div>
+      <div class="input-group">
+        <label>Username / Email</label>
+        <input
+          type="text"
+          placeholder="Enter Username/Email"
+          [(ngModel)]="username"
+          name="username">
+      </div>
 
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" placeholder="Enter Password">
-            </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          [(ngModel)]="password"
+          name="password">
+      </div>
 
-            <button type="submit" class="login-btn">
-                Login
-            </button>
+      <p style="color:red;" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </p>
 
-            <!-- Forgot Password -->
-            <div class="forgot-password">
-                <a routerLink="/forgot-password">Forgot Password?</a>
-            </div>
+      <button
+        type="button"
+        class="login-btn"
+        (click)="login()">
+        Login
+      </button>
 
-            <!-- Register Link -->
-            <div class="register-link">
-                Don't have an account?
-                <a routerLink="/register">Create Account</a>
-            </div>
+      <div class="forgot-password">
+        <a routerLink="/forgot-password">Forgot Password?</a>
+      </div>
 
-        </form>
+      <div class="register-link">
+        Don't have an account?
+        <a routerLink="/register">Create Account</a>
+      </div>
 
-    </div>
+    </form>
+
+  </div>
 </div>

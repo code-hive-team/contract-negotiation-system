@@ -1,25 +1,37 @@
-<nav class="navbar">
+<div class="navbar">
 
-    <div class="left-section">
+    <div class="left">
 
-        <button class="menu-btn">
-            &#9776;
+        <button class="menu-btn" (click)="toggleMenu()">
+            ☰
         </button>
 
-        <img src="assets/logo.png" class="logo">
+        <img src="assets/company.png" class="logo">
 
-        <h2>AI Contract</h2>
-
-    </div>
-
-    <div class="right-section">
-
-        <button>Notifications</button>
-
-        <button>Help</button>
-
-        <button>Profile</button>
+        <h2>AI Contract Negotiation System</h2>
 
     </div>
 
-</nav>
+    <div class="right">
+        <a>Help</a>
+        <a routerLink="/profile">Profile</a>
+    </div>
+
+</div>
+
+<div class="sidebar" [class.open]="isMenuOpen">
+
+    <a routerLink="/dashboard">Home</a>
+
+    <a routerLink="/history">History</a>
+
+    <a routerLink="/ongoing">Ongoing</a>
+
+    <a routerLink="/settings">Settings</a>
+
+    <a routerLink="/help">Help</a>
+
+    <a routerLink="/login">Sign Out</a>
+
+</div>
+

@@ -17,14 +17,14 @@
 .welcome-card{
     text-align:center;
     color:white;
-    animation:fadeIn 1.5s ease;
+    
 }
 
 .logo{
     width:180px;
     height:180px;
     border-radius:50%;
-    animation:logoAnimation 2s ease-in-out infinite alternate;
+    
 }
 
 h1{

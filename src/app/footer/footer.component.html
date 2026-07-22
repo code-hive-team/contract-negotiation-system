@@ -1,1 +1,32 @@
-<p>footer works!</p>
+<footer class="footer">
+
+  <a routerLink="/dashboard"
+     routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact:true}"
+     class="footer-item">
+      🏠
+      <span>Home</span>
+  </a>
+
+  <a routerLink="/search"
+     routerLinkActive="active"
+     class="footer-item">
+      🔍
+      <span>Search</span>
+  </a>
+
+  <a routerLink="/history"
+     routerLinkActive="active"
+     class="footer-item">
+      📄
+      <span>History</span>
+  </a>
+
+  <a routerLink="/ongoing"
+     routerLinkActive="active"
+     class="footer-item">
+      ⏳
+      <span>Ongoing</span>
+  </a>
+
+</footer>

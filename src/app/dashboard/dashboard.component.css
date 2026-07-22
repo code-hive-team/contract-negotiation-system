@@ -1,0 +1,72 @@
+.dashboard-content{
+
+    min-height:calc(100vh - 120px);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(135deg,#b9f332,#2a5298);
+
+}
+.card{
+    width:420px;
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.dashboard-content h2{
+
+    margin-bottom:40px;
+
+    color:#2563eb;
+
+}
+
+.upload-section{
+
+    display:flex;
+
+    gap:40px;
+
+}
+
+.upload-btn{
+
+    width:300px;
+
+    height:70px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.upload-btn:hover{
+
+    background:#ffffff;
+    color: #2563eb;
+
+    transform:translateY(-5px);
+
+}

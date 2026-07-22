@@ -4,20 +4,27 @@
         <form>
              <div class="input-group">
                 <label>User Name</label>
-                <input type="text" placeholder="Enter User Name">
+                <input type="text" placeholder="Enter User Name"
+                [(ngModel)]="username" name="username">
             </div>
              <div class="input-group">
                 <label>Email</label>
-                <input type="email" placeholder="Enter your Email">
+                <input type="email" placeholder="Enter your Email"
+                [(ngModel)]="email" name="email">
             </div>
              <div class="input-group">
                 <label>Password</label>
-                <input type="Password" placeholder="Enter Password">
+                <input type="Password" placeholder="Enter Password"
+                [(ngModel)]="password" name="password">
             </div>
              <div class="input-group">
                 <label>Confirm Password</label>
-                <input type="Password" placeholder="Confirm your Password">
+                <input type="Password" placeholder="Confirm your Password"
+                [(ngModel)]="confirmPassword" name="confirmPassword">
             </div>
+            <p style="color:red;" *ngIf="errorMessage">
+  {{ errorMessage }}
+</p>
         <button
     type="button"
     class="register-btn"
@@ -27,18 +34,6 @@
 
     </form>
 
-    <div class="divider">
-      <span>OR</span>
-    </div>
-
-    <button class="google-btn">
-      <img src="assets/image.png" alt="">
-      Continue with Google
-    </button>
-    <button class="facebook-btn">
-      <img src="assets/facebook.png" alt="">
-      Continue with Facebook
-    </button>
 
     <div class="login-link">
               Already have an account?
