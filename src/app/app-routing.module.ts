@@ -5,7 +5,6 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ProfileComponent } from './profile/profile.component';
 import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
@@ -14,7 +13,6 @@ const routes: Routes = [
   {path:'login',component:LoginComponent},
   {path:'register', component:RegisterComponent},
   {path:'dashboard',component:DashboardComponent},
-  {path:'profile',component:ProfileComponent},
   {path:'about',component:AboutComponent}
 ];
 

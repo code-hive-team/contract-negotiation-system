@@ -10,7 +10,6 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { ProfileComponent } from './profile/profile.component';
 import {HttpClientModule} from '@angular/common/http';
 import { AboutComponent } from './about/about.component';
 @NgModule({
@@ -22,7 +21,6 @@ import { AboutComponent } from './about/about.component';
     DashboardComponent,
     NavbarComponent,
     WelcomeComponent,
-    ProfileComponent,
     AboutComponent
   ],
   imports: [

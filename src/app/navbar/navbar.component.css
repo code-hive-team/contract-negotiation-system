@@ -50,49 +50,4 @@
     cursor:pointer;
 }
 
-.sidebar{
 
-    position:fixed;
-    top:70px;
-    left:-260px;
-
-    width:250px;
-    height:100%;
-
-    background:#111827;
-
-    transition:.3s;
-
-    padding-top:20px;
-
-    z-index:999;
-
-}
-
-.sidebar.open{
-    left:0;
-}
-
-.sidebar a{
-
-    display:block;
-
-    color:white;
-
-    text-decoration:none;
-
-    padding:18px 25px;
-
-    font-size:18px;
-
-    transition:.3s;
-
-}
-
-.sidebar a:hover{
-
-    background:#2563eb;
-
-    padding-left:35px;
-
-}
