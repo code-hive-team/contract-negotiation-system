@@ -38,7 +38,7 @@ export class LoginComponent {
 
         // Optional: Store JWT token if backend returns one
         if (response.token) {
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('token', response.accessToken);
         }
 
         this.router.navigate(['/dashboard']);

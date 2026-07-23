@@ -1,23 +1,69 @@
 <app-navbar></app-navbar>
+<div class="dashboard-container">
+    
+    <div class="upload-card">
 
-<div class="dashboard-content">
-    <div class="card">
+  <h2>Welcome to AI Contract Negotiation Platform</h2>
 
-    <h2>Welcome to AI Contract Negotiation Platform</h2>
+  <div class="upload-section">
 
-    <div class="upload-section">
+    <input
+      type="file"
+      id="issuerFile"
+      hidden
+      (change)="onIssuerSelected($event)"
+      accept=".pdf,.doc,.docx">
 
-        <button class="upload-btn">
-            📄 Upload Issuer file
-        </button>
+    <button class="upload-btn" (click)="issuerFile.click()">
+      📄 Upload Issuer File
+    </button>
 
-        <button class="upload-btn">
-            📄 Upload Acquirer file
-        </button>
-        </div>
+    <input
+      #issuerFile
+      type="file"
+      hidden
+      (change)="onIssuerSelected($event)"
+      accept=".pdf,.doc,.docx">
 
-    </div>
+    <p *ngIf="issuerFileName">
+      Selected: {{ issuerFileName }}
+    </p>
 
+  </div>
+  <div class="upload-section">
+
+    <input
+      #acquirerFile
+      type="file"
+      hidden
+      (change)="onAcquirerSelected($event)"
+      accept=".pdf,.doc,.docx">
+
+    <button class="upload-btn" (click)="acquirerFile.click()">
+      📄 Upload Acquirer File
+    </button>
+
+    <p *ngIf="acquirerFileName">
+      Selected: {{ acquirerFileName }}
+    </p>
+
+  </div>
+
+  <button
+      class="compare-btn"
+      *ngIf="issuerSelected && acquirerSelected"
+      (click)="compareContracts()">
+
+      Compare Contracts
+
+  </button>
+   <div class="warning-box">
+    <strong>⚠ Before Uploading</strong>
+
+    <p>
+        Upload two related software contracts—one from the <b>Issuer</b> and one from the <b>Acquirer</b>. 
+        Both should describe the same agreement and include legal clauses such as Payment Terms, Delivery, Warranty, Confidentiality, Intellectual Property, Liability, Termination, and Governing Law. Only PDF files up to 10 MB are accepted.
+    </p>
 </div>
-
-<app-footer></app-footer>
+  </div>
+</div>
