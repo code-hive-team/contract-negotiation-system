@@ -24,8 +24,8 @@ def test_main_extract_text():
 
 def test_main_extract_text_exception():
     with patch("utils.PdfReader", side_effect=ValueError("Error")):
-        res = extract_text("fail.pdf")
-        assert res == ""
+        with pytest.raises(ValueError):
+            extract_text("fail.pdf")
 
 def test_print_classification_table():
     issuer = {"terms": "val1"}

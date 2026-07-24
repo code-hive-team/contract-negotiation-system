@@ -24,9 +24,7 @@ def test_extract_text_success():
 
 def test_extract_text_exception():
     with patch("utils.PdfReader", side_effect=ValueError("Read fail")):
-        # Since PdfReader(pdf_path) raises exception, let's test it raises HTTPException
-        from fastapi import HTTPException
-        with pytest.raises(HTTPException):
+        with pytest.raises(ValueError):
             extract_text("dummy_path.pdf")
 
 def test_negotiate_contracts_success():
