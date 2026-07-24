@@ -23,7 +23,10 @@ pipeline {
         stage('Run Tests') {
             steps {
                 dir('GenAI_Part') {
-                    sh 'python3 -m pytest --cov=. --cov-report=xml || true'
+                    sh '''
+                        echo "GROQ_API_KEY=dummy_mock_key_for_tests" > .env
+                        python3 -m pytest --cov=. --cov-report=xml || true
+                    '''
                 }
             }
         }

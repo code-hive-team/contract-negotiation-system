@@ -1,6 +1,5 @@
 import io
 import sys
-import os
 import pytest
 from unittest.mock import patch, MagicMock
 from main import clean_val, extract_text, print_classification_table, print_negotiation_report
