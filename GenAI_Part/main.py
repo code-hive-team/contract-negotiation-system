@@ -31,7 +31,7 @@ def extract_text(pdf_path):
 
         return text.strip()
 
-    except Exception as e:
+    except (OSError, ValueError) as e:
         print(f"Error reading PDF: {e}")
         return ""
 

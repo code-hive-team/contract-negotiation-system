@@ -23,7 +23,7 @@ def test_extract_text_success():
         assert text == "Page content"
 
 def test_extract_text_exception():
-    with patch("app.PdfReader", side_effect=RuntimeError("Read fail")):
+    with patch("app.PdfReader", side_effect=ValueError("Read fail")):
         # Since PdfReader(pdf_path) raises exception, let's test it raises HTTPException
         from fastapi import HTTPException
         with pytest.raises(HTTPException):
@@ -175,7 +175,7 @@ def test_negotiate_contracts_workflow_exception():
     
     with patch("app.extract_text") as mock_extract, \
          patch("app.classify_contract") as mock_classify, \
-         patch("app.negotiation_workflow.invoke", side_effect=RuntimeError("Workflow execution failed")), \
+         patch("app.negotiation_workflow.invoke", side_effect=ValueError("Workflow execution failed")), \
          patch("filecmp.cmp", return_value=False):
         
         mock_extract.side_effect = [
@@ -191,5 +191,5 @@ def test_negotiate_contracts_workflow_exception():
             "/api/negotiate",
             files={"issuer_file": file1, "acquirer_file": file2}
         )
-        assert response.status_code == 500
+        assert response.status_code == 400
         assert "Workflow execution failed" in response.json()["detail"]

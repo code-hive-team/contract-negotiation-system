@@ -23,7 +23,7 @@ def test_main_extract_text():
         assert res == "Main page text"
 
 def test_main_extract_text_exception():
-    with patch("main.PdfReader", side_effect=RuntimeError("Error")):
+    with patch("main.PdfReader", side_effect=ValueError("Error")):
         res = extract_text("fail.pdf")
         assert res == ""
 

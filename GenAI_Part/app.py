@@ -37,7 +37,7 @@ def extract_text(pdf_path):
             if page_text:
                 text += page_text + "\n"
         return text.strip()
-    except Exception as e:
+    except (OSError, ValueError) as e:
         raise HTTPException(status_code=400, detail=f"Error reading PDF: {str(e)}")
 
 @app.post("/api/negotiate")
@@ -54,7 +54,7 @@ async def negotiate_contracts(
             shutil.copyfileobj(acquirer_file.file, acquirer_tmp)
             issuer_tmp_path = issuer_tmp.name
             acquirer_tmp_path = acquirer_tmp.name
-        except Exception as e:
+        except OSError as e:
             raise HTTPException(status_code=500, detail=f"Failed to process file uploads: {str(e)}")
 
     try:
@@ -123,8 +123,8 @@ async def negotiate_contracts(
         }
     except HTTPException as he:
         raise he
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     finally:
         try:
             if 'issuer_tmp_path' in locals():
