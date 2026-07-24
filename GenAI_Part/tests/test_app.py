@@ -7,6 +7,9 @@ from app import app, extract_text
 
 client = TestClient(app)
 
+def create_mock_file(name="issuer.pdf", content=b"dummy"):
+    return (name, io.BytesIO(content), "application/pdf")
+
 def test_extract_text_success():
     # Test extract_text with mock PdfReader
     with patch("app.PdfReader") as mock_pdf_reader:
@@ -29,8 +32,8 @@ def test_extract_text_exception():
 
 def test_negotiate_contracts_success():
     # Setup files
-    file1 = ("issuer.pdf", io.BytesIO(b"dummy pdf content 1"), "application/pdf")
-    file2 = ("acquirer.pdf", io.BytesIO(b"dummy pdf content 2"), "application/pdf")
+    file1 = create_mock_file("issuer.pdf", b"dummy pdf content 1")
+    file2 = create_mock_file("acquirer.pdf", b"dummy pdf content 2")
     
     with patch("app.extract_text") as mock_extract, \
          patch("app.classify_contract") as mock_classify, \
@@ -79,8 +82,8 @@ def test_negotiate_contracts_success():
         assert data["summary"]["negotiation_status"] == "SUCCESS"
 
 def test_negotiate_contracts_identical_files():
-    file1 = ("issuer.pdf", io.BytesIO(b"same content"), "application/pdf")
-    file2 = ("acquirer.pdf", io.BytesIO(b"same content"), "application/pdf")
+    file1 = create_mock_file("issuer.pdf", b"same content")
+    file2 = create_mock_file("acquirer.pdf", b"same content")
     
     # We force filecmp.cmp to return True to simulate identical files check
     with patch("filecmp.cmp", return_value=True):
@@ -92,8 +95,8 @@ def test_negotiate_contracts_identical_files():
         assert "cannot be the same file" in response.json()["detail"]
 
 def test_negotiate_contracts_swapped_issuer():
-    file1 = ("issuer.pdf", io.BytesIO(b"dummy"), "application/pdf")
-    file2 = ("acquirer.pdf", io.BytesIO(b"dummy"), "application/pdf")
+    file1 = create_mock_file("issuer.pdf")
+    file2 = create_mock_file("acquirer.pdf")
     
     with patch("app.extract_text") as mock_extract, \
          patch("filecmp.cmp", return_value=False):
@@ -111,8 +114,8 @@ def test_negotiate_contracts_swapped_issuer():
         assert "Swapped upload detected. The Acquirer contract was uploaded" in response.json()["detail"]
 
 def test_negotiate_contracts_swapped_acquirer():
-    file1 = ("issuer.pdf", io.BytesIO(b"dummy"), "application/pdf")
-    file2 = ("acquirer.pdf", io.BytesIO(b"dummy"), "application/pdf")
+    file1 = create_mock_file("issuer.pdf")
+    file2 = create_mock_file("acquirer.pdf")
     
     with patch("app.extract_text") as mock_extract, \
          patch("filecmp.cmp", return_value=False):
@@ -130,8 +133,8 @@ def test_negotiate_contracts_swapped_acquirer():
         assert "Swapped upload detected. The Issuer contract was uploaded" in response.json()["detail"]
 
 def test_negotiate_contracts_empty_issuer():
-    file1 = ("issuer.pdf", io.BytesIO(b"dummy"), "application/pdf")
-    file2 = ("acquirer.pdf", io.BytesIO(b"dummy"), "application/pdf")
+    file1 = create_mock_file("issuer.pdf")
+    file2 = create_mock_file("acquirer.pdf")
     
     with patch("app.extract_text") as mock_extract, \
          patch("filecmp.cmp", return_value=False):
@@ -149,8 +152,8 @@ def test_negotiate_contracts_empty_issuer():
         assert "Issuer PDF contains no extractable text" in response.json()["detail"]
 
 def test_negotiate_contracts_empty_acquirer():
-    file1 = ("issuer.pdf", io.BytesIO(b"dummy"), "application/pdf")
-    file2 = ("acquirer.pdf", io.BytesIO(b"dummy"), "application/pdf")
+    file1 = create_mock_file("issuer.pdf")
+    file2 = create_mock_file("acquirer.pdf")
     
     with patch("app.extract_text") as mock_extract, \
          patch("filecmp.cmp", return_value=False):
@@ -168,8 +171,8 @@ def test_negotiate_contracts_empty_acquirer():
         assert "Acquirer PDF contains no extractable text" in response.json()["detail"]
 
 def test_negotiate_contracts_workflow_exception():
-    file1 = ("issuer.pdf", io.BytesIO(b"dummy"), "application/pdf")
-    file2 = ("acquirer.pdf", io.BytesIO(b"dummy"), "application/pdf")
+    file1 = create_mock_file("issuer.pdf")
+    file2 = create_mock_file("acquirer.pdf")
     
     with patch("app.extract_text") as mock_extract, \
          patch("app.classify_contract") as mock_classify, \
