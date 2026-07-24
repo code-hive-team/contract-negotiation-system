@@ -80,7 +80,6 @@ p{
 
 .step-card{
     width:230px;
-    background:#fff;
     border-radius:16px;
     padding:25px;
     box-shadow:0 8px 25px rgba(0,0,0,.08);
@@ -118,7 +117,6 @@ p{
 .step-card h3{
     color:#1e3a8a;
     margin-bottom:10px;
-    color: white;
     font-weight: bold;
 }
 
