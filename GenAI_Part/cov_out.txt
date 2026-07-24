@@ -1,0 +1,42 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.4, pytest-8.2.2, pluggy-1.6.0
+rootdir: C:\Users\BUNNY\Desktop\Negotiation Project\GenAI_Part
+configfile: pytest.ini
+plugins: anyio-4.12.1, langsmith-0.10.3, asyncio-0.23.7, cov-5.0.0
+asyncio: mode=Mode.STRICT
+collected 24 items
+
+tests\test_agents.py ....                                                [ 16%]
+tests\test_app.py .........                                              [ 54%]
+tests\test_classifier.py .                                               [ 58%]
+tests\test_main.py ......                                                [ 83%]
+tests\test_negotiation_graph.py ....                                     [100%]
+
+============================== warnings summary ===============================
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\checkpoint\base\__init__.py:18
+  C:\Users\BUNNY\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\checkpoint\base\__init__.py:18: LangChainPendingDeprecationWarning: The default value of `allowed_objects` will change in a future version. Pass an explicit value (e.g., allowed_objects='messages' or allowed_objects='core') to suppress this warning.
+    from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+---------- coverage: platform win32, python 3.12.4-final-0 -----------
+Name                              Stmts   Miss  Cover   Missing
+---------------------------------------------------------------
+acquirer_agent.py                     9      0   100%
+app.py                               73      6    92%   57-58, 102, 106, 133-134
+classifier.py                        18      1    94%   51
+issuer_agent.py                       9      0   100%
+main.py                             178     22    88%   126, 154-157, 162-167, 175-176, 179-180, 183-184, 186-187, 241-242, 245
+negotiation_graph.py                 32      0   100%
+reconciliation_agent.py              25      1    96%   83
+refactor.py                          18     18     0%   1-23
+tests\test_agents.py                 56      0   100%
+tests\test_app.py                    83      0   100%
+tests\test_classifier.py             17      0   100%
+tests\test_main.py                   63      2    97%   118-119
+tests\test_negotiation_graph.py      34      0   100%
+---------------------------------------------------------------
+TOTAL                               615     50    92%
+Coverage XML written to file coverage.xml
+
+======================= 24 passed, 1 warning in 12.80s ========================

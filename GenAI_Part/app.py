@@ -126,9 +126,10 @@ async def negotiate_contracts(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        # Clean up temp files
         try:
-            os.remove(issuer_tmp_path)
-            os.remove(acquirer_tmp_path)
-        except Exception:
+            if 'issuer_tmp_path' in locals():
+                os.remove(issuer_tmp_path)
+            if 'acquirer_tmp_path' in locals():
+                os.remove(acquirer_tmp_path)
+        except OSError:
             pass

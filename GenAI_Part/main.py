@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 sys.stdout.reconfigure(encoding='utf-8')
 import logging
+import textwrap
 from pypdf import PdfReader
 
 # Suppress harmless pypdf warnings
@@ -34,8 +35,6 @@ def extract_text(pdf_path):
         print(f"Error reading PDF: {e}")
         return ""
 
-
-import textwrap
 
 def clean_val(val):
     """Sanitize currency and other unprintable unicode symbols for terminal safety."""
@@ -138,105 +137,108 @@ def print_negotiation_report(final_clauses):
     print("FINAL NEGOTIATED CONTRACT GENERATED")
 
 
+def main():
+        parser = argparse.ArgumentParser(description="Autonomous Contract Negotiation System GenAI Pipeline")
+        parser.add_argument("--issuer", help="Path to the issuer contract PDF")
+        parser.add_argument("--acquirer", help="Path to the acquirer contract PDF")
+        parser.add_argument("--output", help="Path to save the negotiation results JSON")
+        args = parser.parse_args()
+
+        issuer_pdf = args.issuer
+        acquirer_pdf = args.acquirer
+        output_path = args.output
+
+        if not issuer_pdf or not acquirer_pdf:
+            # Fallback to interactive prompts if not provided via CLI args
+            if not issuer_pdf:
+                issuer_pdf = input("Upload Issuer Contract PDF: ").strip()
+            if not acquirer_pdf:
+                acquirer_pdf = input("Upload Acquirer Contract PDF: ").strip()
+
+        if issuer_pdf and acquirer_pdf:
+            try:
+                if os.path.exists(issuer_pdf) and os.path.exists(acquirer_pdf) and os.path.samefile(issuer_pdf, acquirer_pdf):
+                    print("❌ Error: Issuer and Acquirer contracts cannot be the same file.")
+                    exit()
+            except OSError:
+                if os.path.abspath(issuer_pdf) == os.path.abspath(acquirer_pdf):
+                    print("❌ Error: Issuer and Acquirer contracts cannot be the same file.")
+                    exit()
+
+        print("\nReading PDFs...\n")
+
+        issuer_text = extract_text(issuer_pdf)
+        acquirer_text = extract_text(acquirer_pdf)
+
+        if not issuer_text:
+            print("❌ Issuer PDF contains no extractable text.")
+            exit()
+
+        if not acquirer_text:
+            print("❌ Acquirer PDF contains no extractable text.")
+            exit()
+
+        if "Acquirer Company Contract" in issuer_text:
+            print("❌ Error: Swapped upload detected. The Acquirer contract was uploaded in place of the Issuer contract.")
+            exit()
+        if "Issuer Company Contract" in acquirer_text:
+            print("❌ Error: Swapped upload detected. The Issuer contract was uploaded in place of the Acquirer contract.")
+            exit()
+
+        print("✅ PDFs Loaded Successfully\n")
+
+        print("Classifying Issuer Contract...")
+        issuer_clauses = classify_contract(issuer_text)
+
+        print("Classifying Acquirer Contract...")
+        acquirer_clauses = classify_contract(acquirer_text)
+
+        print("\n✅ Classification Completed\n")
+
+        print("=" * 60)
+        print("       CONTRACT CLASSIFICATION COMPARISON")
+        print("=" * 60)
+        print()
+        print_classification_table(issuer_clauses, acquirer_clauses)
+
+        print("\n" + "=" * 60)
+        print("       STARTING AI NEGOTIATION")
+        print("=" * 60)
+
+        state = {
+            "issuer_clauses": issuer_clauses,
+            "acquirer_clauses": acquirer_clauses,
+            "issuer_response": "",
+            "acquirer_response": "",
+            "final_clauses": []
+        }
+
+        result = negotiation_workflow.invoke(state)
+
+        print("\n" + "=" * 60)
+        print("       ISSUER NEGOTIATION FEEDBACK")
+        print("=" * 60)
+        print(result["issuer_response"])
+
+        print("\n" + "=" * 60)
+        print("       ACQUIRER NEGOTIATION FEEDBACK")
+        print("=" * 60)
+        print(result["acquirer_response"])
+
+        print("\n" + "=" * 60)
+        print("       ✅ NEGOTIATION COMPLETED\n")
+        print("=" * 60)
+
+        final_clauses = result.get("final_clauses", [])
+        print_negotiation_report(final_clauses)
+
+        if output_path:
+            try:
+                with open(output_path, "w", encoding="utf-8") as f:
+                    json.dump(final_clauses, f, indent=2)
+                print(f"\n✅ Saved final negotiation results to: {output_path}")
+            except OSError as e:
+                print(f"\n❌ Error saving output JSON to {output_path}: {e}")
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Autonomous Contract Negotiation System GenAI Pipeline")
-    parser.add_argument("--issuer", help="Path to the issuer contract PDF")
-    parser.add_argument("--acquirer", help="Path to the acquirer contract PDF")
-    parser.add_argument("--output", help="Path to save the negotiation results JSON")
-    args = parser.parse_args()
-
-    issuer_pdf = args.issuer
-    acquirer_pdf = args.acquirer
-    output_path = args.output
-
-    if not issuer_pdf or not acquirer_pdf:
-        # Fallback to interactive prompts if not provided via CLI args
-        if not issuer_pdf:
-            issuer_pdf = input("Upload Issuer Contract PDF: ").strip()
-        if not acquirer_pdf:
-            acquirer_pdf = input("Upload Acquirer Contract PDF: ").strip()
-
-    if issuer_pdf and acquirer_pdf:
-        try:
-            if os.path.exists(issuer_pdf) and os.path.exists(acquirer_pdf) and os.path.samefile(issuer_pdf, acquirer_pdf):
-                print("❌ Error: Issuer and Acquirer contracts cannot be the same file.")
-                exit()
-        except Exception:
-            if os.path.abspath(issuer_pdf) == os.path.abspath(acquirer_pdf):
-                print("❌ Error: Issuer and Acquirer contracts cannot be the same file.")
-                exit()
-
-    print("\nReading PDFs...\n")
-
-    issuer_text = extract_text(issuer_pdf)
-    acquirer_text = extract_text(acquirer_pdf)
-
-    if not issuer_text:
-        print("❌ Issuer PDF contains no extractable text.")
-        exit()
-
-    if not acquirer_text:
-        print("❌ Acquirer PDF contains no extractable text.")
-        exit()
-
-    if "Acquirer Company Contract" in issuer_text:
-        print("❌ Error: Swapped upload detected. The Acquirer contract was uploaded in place of the Issuer contract.")
-        exit()
-    if "Issuer Company Contract" in acquirer_text:
-        print("❌ Error: Swapped upload detected. The Issuer contract was uploaded in place of the Acquirer contract.")
-        exit()
-
-    print("✅ PDFs Loaded Successfully\n")
-
-    print("Classifying Issuer Contract...")
-    issuer_clauses = classify_contract(issuer_text)
-
-    print("Classifying Acquirer Contract...")
-    acquirer_clauses = classify_contract(acquirer_text)
-
-    print("\n✅ Classification Completed\n")
-
-    print("=" * 60)
-    print("       CONTRACT CLASSIFICATION COMPARISON")
-    print("=" * 60)
-    print()
-    print_classification_table(issuer_clauses, acquirer_clauses)
-
-    print("\n" + "=" * 60)
-    print("       STARTING AI NEGOTIATION")
-    print("=" * 60)
-
-    state = {
-        "issuer_clauses": issuer_clauses,
-        "acquirer_clauses": acquirer_clauses,
-        "issuer_response": "",
-        "acquirer_response": "",
-        "final_clauses": []
-    }
-
-    result = negotiation_workflow.invoke(state)
-
-    print("\n" + "=" * 60)
-    print("       ISSUER NEGOTIATION FEEDBACK")
-    print("=" * 60)
-    print(result["issuer_response"])
-
-    print("\n" + "=" * 60)
-    print("       ACQUIRER NEGOTIATION FEEDBACK")
-    print("=" * 60)
-    print(result["acquirer_response"])
-
-    print("\n" + "=" * 60)
-    print("       ✅ NEGOTIATION COMPLETED\n")
-    print("=" * 60)
-
-    final_clauses = result.get("final_clauses", [])
-    print_negotiation_report(final_clauses)
-
-    if output_path:
-        try:
-            with open(output_path, "w", encoding="utf-8") as f:
-                json.dump(final_clauses, f, indent=2)
-            print(f"\n✅ Saved final negotiation results to: {output_path}")
-        except Exception as e:
-            print(f"\n❌ Error saving output JSON to {output_path}: {e}")
+    main()

@@ -1,0 +1,31 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.4, pytest-8.2.2, pluggy-1.6.0 -- C:\Users\BUNNY\AppData\Local\Programs\Python\Python312\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\BUNNY\Desktop\Negotiation Project\GenAI_Part
+configfile: pytest.ini
+plugins: anyio-4.12.1, langsmith-0.10.3, asyncio-0.23.7, cov-5.0.0
+asyncio: mode=Mode.STRICT
+collecting ... collected 24 items
+
+tests/test_agents.py::test_acquirer_agent PASSED                         [  4%]
+tests/test_agents.py::test_issuer_agent PASSED                           [  8%]
+tests/test_agents.py::test_reconciliation_agent_success PASSED           [ 12%]
+tests/test_agents.py::test_reconciliation_agent_parse_error PASSED       [ 16%]
+tests/test_app.py::test_extract_text_success PASSED                      [ 20%]
+tests/test_app.py::test_extract_text_exception PASSED                    [ 25%]
+tests/test_app.py::test_negotiate_contracts_success 
+
+============================== warnings summary ===============================
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\checkpoint\base\__init__.py:18
+  C:\Users\BUNNY\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\checkpoint\base\__init__.py:18: LangChainPendingDeprecationWarning: The default value of `allowed_objects` will change in a future version. Pass an explicit value (e.g., allowed_objects='messages' or allowed_objects='core') to suppress this warning.
+    from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+---------- coverage: platform win32, python 3.12.4-final-0 -----------
+Coverage XML written to file coverage.xml
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+<frozen ntpath>:741: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+======================== 6 passed, 1 warning in 22.85s ========================

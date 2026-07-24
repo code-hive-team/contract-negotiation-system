@@ -23,7 +23,7 @@ def test_main_extract_text():
         assert res == "Main page text"
 
 def test_main_extract_text_exception():
-    with patch("main.PdfReader", side_effect=Exception("Error")):
+    with patch("main.PdfReader", side_effect=RuntimeError("Error")):
         res = extract_text("fail.pdf")
         assert res == ""
 
@@ -112,8 +112,8 @@ def test_main_execution_flow(tmp_path):
             ]
         }
         
-        import runpy
+        import main
         try:
-            runpy.run_path("main.py", run_name="__main__")
+            main.main()
         except SystemExit:
             pass
