@@ -7,8 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ContractService {
 
-  private apiUrl = 'http://localhost:8080/api/contracts';
-
+  private apiUrl = 'http://13.202.79.56:8080/api';
   constructor(private http: HttpClient) {}
 
   compareContracts(issuer: File, acquirer: File): Observable<any> {

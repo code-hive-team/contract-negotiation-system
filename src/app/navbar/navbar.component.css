@@ -36,11 +36,6 @@
     color:white;
 }
 
-.right{
-    display:flex;
-    align-items:center;
-    gap:25px;
-}
 
 .icon-btn{
     background:none;

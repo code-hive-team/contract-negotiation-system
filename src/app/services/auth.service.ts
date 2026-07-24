@@ -9,7 +9,7 @@ export class AuthService {
 
   // Render Backend URL
   private apiUrl = 'https://contract-backend-1amj.onrender.com/api/auth';
-
+  private apiurl = 'http://13.202.79.56:8080/api/auth';
   constructor(private http: HttpClient) { }
 
   register(user: any): Observable<any> {

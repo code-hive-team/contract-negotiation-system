@@ -12,6 +12,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import {HttpClientModule} from '@angular/common/http';
 import { AboutComponent } from './about/about.component';
+
 @NgModule({
   declarations: [
     AppComponent,
