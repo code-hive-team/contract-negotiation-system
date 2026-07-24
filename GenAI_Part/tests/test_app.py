@@ -11,7 +11,7 @@ def create_mock_file(name="issuer.pdf", content=b"dummy"):
 
 def test_extract_text_success():
     # Test extract_text with mock PdfReader
-    with patch("app.PdfReader") as mock_pdf_reader:
+    with patch("utils.PdfReader") as mock_pdf_reader:
         mock_page = MagicMock()
         mock_page.extract_text.return_value = "Page content"
         
@@ -23,7 +23,7 @@ def test_extract_text_success():
         assert text == "Page content"
 
 def test_extract_text_exception():
-    with patch("app.PdfReader", side_effect=ValueError("Read fail")):
+    with patch("utils.PdfReader", side_effect=ValueError("Read fail")):
         # Since PdfReader(pdf_path) raises exception, let's test it raises HTTPException
         from fastapi import HTTPException
         with pytest.raises(HTTPException):

@@ -21,24 +21,13 @@ app = FastAPI(
 # Enable CORS for frontend connectivity
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:4200", "http://localhost:8080"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-def extract_text(pdf_path):
-    """Extract text from a PDF file."""
-    try:
-        reader = PdfReader(pdf_path)
-        text = ""
-        for page in reader.pages:
-            page_text = page.extract_text()
-            if page_text:
-                text += page_text + "\n"
-        return text.strip()
-    except (OSError, ValueError) as e:
-        raise HTTPException(status_code=400, detail=f"Error reading PDF: {str(e)}")
+from utils import extract_text, validate_contracts
 
 @app.post("/api/negotiate")
 async def negotiate_contracts(
@@ -65,16 +54,7 @@ async def negotiate_contracts(
         issuer_text = extract_text(issuer_tmp_path)
         acquirer_text = extract_text(acquirer_tmp_path)
 
-        if not issuer_text:
-            raise HTTPException(status_code=400, detail="Issuer PDF contains no extractable text.")
-        if not acquirer_text:
-            raise HTTPException(status_code=400, detail="Acquirer PDF contains no extractable text.")
-
-        # Check for swapped uploads
-        if "Acquirer Company Contract" in issuer_text:
-            raise HTTPException(status_code=400, detail="Swapped upload detected. The Acquirer contract was uploaded in place of the Issuer contract.")
-        if "Issuer Company Contract" in acquirer_text:
-            raise HTTPException(status_code=400, detail="Swapped upload detected. The Issuer contract was uploaded in place of the Acquirer contract.")
+        validate_contracts(issuer_text, acquirer_text)
 
         # Run pipeline
         issuer_clauses = classify_contract(issuer_text)

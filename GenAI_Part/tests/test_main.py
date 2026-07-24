@@ -11,7 +11,7 @@ def test_clean_val():
     assert clean_val("ordinary text") == "ordinary text"
 
 def test_main_extract_text():
-    with patch("main.PdfReader") as mock_pdf_reader:
+    with patch("utils.PdfReader") as mock_pdf_reader:
         mock_page = MagicMock()
         mock_page.extract_text.return_value = "Main page text"
         
@@ -23,7 +23,7 @@ def test_main_extract_text():
         assert res == "Main page text"
 
 def test_main_extract_text_exception():
-    with patch("main.PdfReader", side_effect=ValueError("Error")):
+    with patch("utils.PdfReader", side_effect=ValueError("Error")):
         res = extract_text("fail.pdf")
         assert res == ""
 

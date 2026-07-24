@@ -14,26 +14,12 @@ logging.getLogger("pypdf").setLevel(logging.ERROR)
 
 from classifier import classify_contract
 from negotiation_graph import negotiation_workflow
+from utils import extract_text, validate_contracts
 
 load_dotenv()
 
 
-def extract_text(pdf_path):
-    """Extract text from a PDF file."""
-    try:
-        reader = PdfReader(pdf_path)
-        text = ""
 
-        for page in reader.pages:
-            page_text = page.extract_text()
-            if page_text:
-                text += page_text + "\n"
-
-        return text.strip()
-
-    except (OSError, ValueError) as e:
-        print(f"Error reading PDF: {e}")
-        return ""
 
 
 def clean_val(val):
@@ -167,22 +153,12 @@ def main():
 
         print("\nReading PDFs...\n")
 
-        issuer_text = extract_text(issuer_pdf)
-        acquirer_text = extract_text(acquirer_pdf)
-
-        if not issuer_text:
-            print("❌ Issuer PDF contains no extractable text.")
-            exit()
-
-        if not acquirer_text:
-            print("❌ Acquirer PDF contains no extractable text.")
-            exit()
-
-        if "Acquirer Company Contract" in issuer_text:
-            print("❌ Error: Swapped upload detected. The Acquirer contract was uploaded in place of the Issuer contract.")
-            exit()
-        if "Issuer Company Contract" in acquirer_text:
-            print("❌ Error: Swapped upload detected. The Issuer contract was uploaded in place of the Acquirer contract.")
+        try:
+            issuer_text = extract_text(issuer_pdf)
+            acquirer_text = extract_text(acquirer_pdf)
+            validate_contracts(issuer_text, acquirer_text)
+        except ValueError as e:
+            print(f"❌ {e}")
             exit()
 
         print("✅ PDFs Loaded Successfully\n")
