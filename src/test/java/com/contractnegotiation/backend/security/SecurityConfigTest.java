@@ -1,11 +1,11 @@
 package com.contractnegotiation.backend.security;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,9 +42,6 @@ class SecurityConfigTest {
     @Mock
     private AuthenticationManager authenticationManager;
 
-    @Mock
-    private HttpServletRequest httpServletRequest;
-
     private SecurityConfig securityConfig;
 
     @BeforeEach
@@ -80,7 +77,8 @@ class SecurityConfigTest {
     void corsConfigurationSource_allowsConfiguredFrontendOrigin() {
         CorsConfigurationSource source = securityConfig.corsConfigurationSource();
 
-        CorsConfiguration configuration = source.getCorsConfiguration(httpServletRequest);
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/contracts/1");
+        CorsConfiguration configuration = source.getCorsConfiguration(request);
 
         assertThat(configuration).isNotNull();
         assertThat(configuration.getAllowedOrigins()).containsExactly(FRONTEND_URL);
