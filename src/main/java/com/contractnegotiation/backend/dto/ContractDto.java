@@ -4,6 +4,7 @@ import com.contractnegotiation.backend.entity.ContractStatus;
 import java.time.LocalDateTime;
 
 public class ContractDto {
+
     private Long id;
     private String title;
     private String originalFileName;
@@ -16,19 +17,7 @@ public class ContractDto {
     private ContractStatus status;
 
     public ContractDto() {
-    }
-
-    public ContractDto(Long id, String title, String originalFileName, String fileType, Long fileSize, String s3Url, Long uploadedById, String uploadedByUsername, LocalDateTime uploadedAt, ContractStatus status) {
-        this.id = id;
-        this.title = title;
-        this.originalFileName = originalFileName;
-        this.fileType = fileType;
-        this.fileSize = fileSize;
-        this.s3Url = s3Url;
-        this.uploadedById = uploadedById;
-        this.uploadedByUsername = uploadedByUsername;
-        this.uploadedAt = uploadedAt;
-        this.status = status;
+        // Default constructor
     }
 
     public Long getId() {

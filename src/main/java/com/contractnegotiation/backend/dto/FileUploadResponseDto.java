@@ -3,6 +3,7 @@ package com.contractnegotiation.backend.dto;
 import com.contractnegotiation.backend.entity.ContractStatus;
 
 public class FileUploadResponseDto {
+
     private String message;
     private Long contractId;
     private String title;
@@ -13,17 +14,7 @@ public class FileUploadResponseDto {
     private ContractStatus status;
 
     public FileUploadResponseDto() {
-    }
-
-    public FileUploadResponseDto(String message, Long contractId, String title, String fileName, String fileType, Long fileSize, String s3Url, ContractStatus status) {
-        this.message = message;
-        this.contractId = contractId;
-        this.title = title;
-        this.fileName = fileName;
-        this.fileType = fileType;
-        this.fileSize = fileSize;
-        this.s3Url = s3Url;
-        this.status = status;
+        // Default constructor
     }
 
     public String getMessage() {

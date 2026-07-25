@@ -39,30 +39,23 @@ public class Negotiation {
     private LocalDateTime updatedAt;
 
     public Negotiation() {
-    }
-
-    public Negotiation(Long id, Long issuerContractId, Long acquirerContractId, String status, String issuerFeedback, String acquirerFeedback, String summary, String fullAiResponseJson, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.issuerContractId = issuerContractId;
-        this.acquirerContractId = acquirerContractId;
-        this.status = status;
-        this.issuerFeedback = issuerFeedback;
-        this.acquirerFeedback = acquirerFeedback;
-        this.summary = summary;
-        this.fullAiResponseJson = fullAiResponseJson;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        // Default constructor required by JPA
     }
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+
+        if (createdAt == null) {
+            createdAt = now;
+        }
+
+        updatedAt = now;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     public Long getId() {

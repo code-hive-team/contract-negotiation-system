@@ -31,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
             JwtTokenProvider jwtTokenProvider) {
+
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -40,12 +41,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public UserDto register(RegisterRequestDto registerRequestDto) {
-        if (userRepository.existsByUsername(registerRequestDto.getUsername())) {
-            throw new IllegalArgumentException("Username '" + registerRequestDto.getUsername() + "' is already taken");
+
+        boolean usernameExists = userRepository.existsByUsername(registerRequestDto.getUsername());
+        if (usernameExists) {
+            throw new IllegalArgumentException(
+                    "Username '" + registerRequestDto.getUsername() + "' is already taken");
         }
 
-        if (userRepository.existsByEmail(registerRequestDto.getEmail())) {
-            throw new IllegalArgumentException("Email '" + registerRequestDto.getEmail() + "' is already in use");
+        boolean emailExists = userRepository.existsByEmail(registerRequestDto.getEmail());
+        if (emailExists) {
+            throw new IllegalArgumentException(
+                    "Email '" + registerRequestDto.getEmail() + "' is already in use");
         }
 
         User user = new User();
@@ -53,7 +59,10 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
 
-        Role role = registerRequestDto.getRole() != null ? registerRequestDto.getRole() : Role.ROLE_USER;
+        Role role = registerRequestDto.getRole() == null
+                ? Role.ROLE_USER
+                : registerRequestDto.getRole();
+
         user.setRole(role);
 
         User savedUser = userRepository.save(user);
@@ -63,27 +72,26 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtResponseDto login(LoginRequestDto loginRequestDto) {
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDto.getUsername(),
-                        loginRequestDto.getPassword()
-                )
-        );
+                        loginRequestDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtTokenProvider.generateToken(authentication);
 
         User user = userRepository.findByUsername(loginRequestDto.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + loginRequestDto.getUsername()));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found with username: " + loginRequestDto.getUsername()));
 
         return new JwtResponseDto(
                 token,
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getRole()
-        );
+                user.getRole());
     }
 
     private UserDto mapToDto(User user) {
@@ -92,7 +100,6 @@ public class AuthServiceImpl implements AuthService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getRole(),
-                user.getCreatedAt()
-        );
+                user.getCreatedAt());
     }
 }

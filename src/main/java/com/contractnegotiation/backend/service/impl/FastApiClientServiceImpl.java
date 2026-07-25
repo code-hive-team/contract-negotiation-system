@@ -25,7 +25,7 @@ public class FastApiClientServiceImpl implements FastApiClientService {
 
     public FastApiClientServiceImpl(
             WebClient.Builder webClientBuilder,
-            @Value("${fastapi.negotiate.url:https://contract-negotiation-system.onrender.com}") String negotiateUrl) {
+            @Value("${fastapi.negotiate.url}") String negotiateUrl) {
         this.webClient = webClientBuilder.build();
         this.negotiateUrl = negotiateUrl;
     }

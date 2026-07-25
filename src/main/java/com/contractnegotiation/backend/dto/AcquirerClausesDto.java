@@ -62,6 +62,7 @@ public class AcquirerClausesDto {
     public void setDelivery(Object delivery) {
         this.delivery = delivery;
     }
+    
 
     public Object getWarranty() {
         return warranty;

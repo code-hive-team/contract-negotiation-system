@@ -36,44 +36,23 @@ public class Contract {
 
     @Column(name = "uploaded_at", nullable = false)
     private LocalDateTime uploadedAt;
-    
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ContractStatus status;
 
     public Contract() {
-    }
-
-    public Contract(Long id,
-                    String title,
-                    String originalFileName,
-                    String fileType,
-                    Long fileSize,
-                    byte[] content,
-                    String s3Url,
-                    User uploadedBy,
-                    LocalDateTime uploadedAt,
-                    ContractStatus status) {
-        this.id = id;
-        this.title = title;
-        this.originalFileName = originalFileName;
-        this.fileType = fileType;
-        this.fileSize = fileSize;
-        this.content = content;
-        this.s3Url = s3Url;
-        this.uploadedBy = uploadedBy;
-        this.uploadedAt = uploadedAt;
-        this.status = status;
+        // Default constructor required by JPA
     }
 
     @PrePersist
     protected void onCreate() {
-        if (this.uploadedAt == null) {
-            this.uploadedAt = LocalDateTime.now();
+        if (uploadedAt == null) {
+            uploadedAt = LocalDateTime.now();
         }
-        if (this.status == null) {
-            this.status = ContractStatus.UPLOADED;
+
+        if (status == null) {
+            status = ContractStatus.UPLOADED;
         }
     }
 
